@@ -4,53 +4,228 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DiTM Armor Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+:root{
+--bg:#06060b;
+--surface:#0c0c14;
+--surface-2:#12121e;
+--surface-3:#171726;
+--border:#1a1a2e;
+--border-strong:#2a2a42;
+--accent:#ff3366;
+--accent-soft:rgba(255,51,102,.12);
+--accent-glow:rgba(255,51,102,.28);
+--safe:#00ff88;
+--warn:#ffaa00;
+--danger:#ff3366;
+--text:#e8e8f0;
+--text-mid:#9a9ab0;
+--text-dim:#6a6a88;
+--mono:"JetBrains Mono",Consolas,monospace;
+--sans:"Outfit","Segoe UI",Arial,sans-serif;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Outfit","Segoe UI",Arial,sans-serif;background:#eef3f7;color:#182631;background-image:radial-gradient(circle at top left,rgba(73,107,142,.12),transparent 26%),radial-gradient(circle at top right,rgba(74,130,111,.08),transparent 22%)}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+font-family:var(--sans);
+color:var(--text);
+background:
+radial-gradient(circle at top left,rgba(255,51,102,.14),transparent 24%),
+radial-gradient(circle at top right,rgba(255,170,0,.08),transparent 18%),
+linear-gradient(180deg,rgba(18,18,30,.72),rgba(6,6,11,1));
+background-color:var(--bg);
+overflow-x:hidden;
+}
+body::before{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+background-image:
+linear-gradient(rgba(255,51,102,.035) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,51,102,.035) 1px,transparent 1px);
+background-size:64px 64px;
+opacity:.7;
+}
+body::after{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px);
+opacity:.2;
+}
+#app,.shell,.hero{position:relative;z-index:1}
 .shell{max-width:1120px;margin:0 auto;padding:28px 24px 40px}
-.card{background:#fbfdff;border:1px solid #d6e0ea;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(24,38,49,.05)}
+.card{
+background:linear-gradient(180deg,rgba(18,18,30,.96),rgba(12,12,20,.94));
+border:1px solid var(--border);
+border-radius:18px;
+padding:20px;
+margin-bottom:16px;
+box-shadow:0 18px 50px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.03);
+}
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.hero .card{max-width:480px;width:100%;box-shadow:0 28px 80px rgba(24,38,49,.08)}
+.hero .card{max-width:500px;width:100%;box-shadow:0 30px 90px rgba(0,0,0,.4),0 0 0 1px rgba(255,51,102,.08)}
 .top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.logo{width:36px;height:36px;border-radius:10px;background:#496b8e;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.32)}
-.sub{color:#627487;font-size:13px;line-height:1.6}
-.input,.select{width:100%;padding:12px 14px;border:1px solid #d6e0ea;border-radius:10px;background:#f3f7fb;font:inherit;color:#182631}
-.input:focus,.select:focus{outline:none;border-color:#496b8e;box-shadow:0 0 0 3px rgba(73,107,142,.10)}
-.label{font-size:12px;color:#627487;margin:12px 0 6px}
-.btn{border:0;border-radius:10px;padding:11px 16px;font:inherit;cursor:pointer;transition:all .18s ease}
-.btn-primary{background:#496b8e;color:#fff}
-.btn-primary:hover{background:#3f5f7e}
-.btn-secondary{background:#fff;border:1px solid #d6e0ea;color:#506274}
-.btn-secondary:hover{border-color:#496b8e;color:#31475f}
+.logo{
+width:38px;
+height:38px;
+border-radius:12px;
+background:linear-gradient(180deg,rgba(255,51,102,.24),rgba(255,51,102,.08));
+border:1px solid rgba(255,51,102,.24);
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 0 0 1px rgba(255,51,102,.08),0 10px 24px rgba(255,51,102,.18);
+}
+.sub{color:var(--text-dim);font-size:13px;line-height:1.6}
+.input,.select{
+width:100%;
+padding:12px 14px;
+border:1px solid var(--border-strong);
+border-radius:12px;
+background:rgba(10,10,18,.88);
+font:inherit;
+color:var(--text);
+}
+.input::placeholder{color:var(--text-dim)}
+.input:focus,.select:focus{
+outline:none;
+border-color:rgba(255,51,102,.6);
+box-shadow:0 0 0 3px rgba(255,51,102,.12);
+}
+.label{
+font-size:12px;
+font-family:var(--mono);
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--text-dim);
+margin:12px 0 6px;
+}
+.btn{
+border:0;
+border-radius:12px;
+padding:11px 16px;
+font:inherit;
+cursor:pointer;
+transition:all .18s ease;
+}
+.btn-primary{
+background:var(--accent);
+color:#fff;
+box-shadow:0 12px 28px rgba(255,51,102,.22);
+}
+.btn-primary:hover{
+background:#e6294f;
+transform:translateY(-1px);
+box-shadow:0 16px 36px rgba(255,51,102,.28);
+}
+.btn-secondary{
+background:rgba(12,12,20,.92);
+border:1px solid var(--border-strong);
+color:var(--text-mid);
+}
+.btn-secondary:hover{
+border-color:rgba(255,51,102,.3);
+color:var(--text);
+transform:translateY(-1px);
+}
 .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .grow{flex:1}
-.pill{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;border:1px solid #d6e0ea;color:#506274;background:#fff}
+.pill{
+display:inline-flex;
+padding:4px 10px;
+border-radius:999px;
+font-size:11px;
+font-family:var(--mono);
+border:1px solid var(--border-strong);
+color:var(--text-mid);
+background:rgba(18,18,30,.88);
+}
 .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.metric-val{font-size:30px;font-weight:700;color:#182631}
-.metric-label{font-size:13px;color:#627487;margin-bottom:6px}
-.metric-sub{font-size:12px;color:#8190a0}
+.metric-val{font-size:30px;font-weight:700;color:var(--text)}
+.metric-label{font-size:13px;color:var(--text-mid);margin-bottom:6px}
+.metric-sub{font-size:12px;color:var(--text-dim)}
 .list{display:flex;flex-direction:column}
-.list-item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #e8eef5}
+.list-item{
+display:flex;
+gap:12px;
+align-items:center;
+padding:12px 0;
+border-top:1px solid rgba(255,255,255,.06);
+}
 .list-item:first-child{border-top:0}
-.sev-critical,.sev-high,.sev-medium,.sev-low,.act-blocked,.act-warned,.act-monitored,.act-active,.act-inactive{padding:4px 10px;border-radius:999px;font-size:11px;border:1px solid transparent}
-.sev-critical,.act-blocked{background:#f9ecef;color:#a85f72;border-color:#e8c7d0}
-.sev-high,.act-warned{background:#fbf2e4;color:#b28a49;border-color:#ecd7b0}
-.sev-medium{background:#eef3f7;color:#627487;border-color:#d6e0ea}
-.sev-low,.act-inactive{background:#f6f8fb;color:#7a8796;border-color:#e4e9ef}
-.act-monitored,.act-active{background:#edf5f1;color:#4a826f;border-color:#cfe0d8}
-.mono{font-family:Consolas,monospace;font-size:12px}
-.hint{background:#f3f7fb;border:1px solid #dce5ee;border-radius:12px;padding:12px 14px}
-.err{display:none;background:#f9ecef;color:#8d4558;border:1px solid #e8c7d0;border-radius:10px;padding:10px 12px;font-size:12px;margin-top:10px}
-.section-title{font-size:14px;font-weight:600;margin-bottom:10px;color:#1d3042}
+.sev-critical,.sev-high,.sev-medium,.sev-low,.act-blocked,.act-warned,.act-monitored,.act-active,.act-inactive{
+padding:4px 10px;
+border-radius:999px;
+font-size:11px;
+font-family:var(--mono);
+border:1px solid transparent;
+}
+.sev-critical,.act-blocked{background:rgba(255,51,102,.12);color:#ff7a98;border-color:rgba(255,51,102,.22)}
+.sev-high,.act-warned{background:rgba(255,170,0,.12);color:#ffc766;border-color:rgba(255,170,0,.22)}
+.sev-medium{background:rgba(74,74,100,.22);color:#b4b4cd;border-color:rgba(122,122,160,.2)}
+.sev-low,.act-inactive{background:rgba(255,255,255,.04);color:#8e8ea8;border-color:rgba(255,255,255,.08)}
+.act-monitored,.act-active{background:rgba(0,255,136,.1);color:#7cffb7;border-color:rgba(0,255,136,.18)}
+.mono{font-family:var(--mono);font-size:12px}
+.hint{
+background:linear-gradient(180deg,rgba(15,15,24,.96),rgba(10,10,18,.92));
+border:1px solid rgba(255,255,255,.07);
+border-radius:14px;
+padding:12px 14px;
+}
+.err{
+display:none;
+background:rgba(255,51,102,.12);
+color:#ff9ab1;
+border:1px solid rgba(255,51,102,.22);
+border-radius:12px;
+padding:10px 12px;
+font-size:12px;
+margin-top:10px;
+}
+.section-title{
+font-size:14px;
+font-weight:600;
+font-family:var(--mono);
+letter-spacing:.06em;
+text-transform:uppercase;
+margin-bottom:10px;
+color:var(--text);
+}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.meta{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #e8eef5}
+.meta{
+display:flex;
+justify-content:space-between;
+gap:12px;
+padding:8px 0;
+border-top:1px solid rgba(255,255,255,.06);
+}
 .meta:first-child{border-top:0}
-.meta-key{font-size:12px;color:#627487}
-.meta-val{font-size:12px;font-family:Consolas,monospace;text-align:right;word-break:break-all;color:#182631}
+.meta-key{font-size:12px;color:var(--text-dim)}
+.meta-val{font-size:12px;font-family:var(--mono);text-align:right;word-break:break-all;color:var(--text)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.tab{padding:8px 14px;border-radius:999px;border:1px solid transparent;background:transparent;color:#627487;cursor:pointer;transition:all .18s ease}
-.tab:hover{color:#31475f}
-.tab.active{background:#e7eef7;border-color:#d3deea;color:#31475f}
+.tab{
+padding:8px 14px;
+border-radius:999px;
+border:1px solid transparent;
+background:transparent;
+color:var(--text-dim);
+cursor:pointer;
+transition:all .18s ease;
+}
+.tab:hover{color:var(--text)}
+.tab.active{
+background:var(--accent-soft);
+border-color:rgba(255,51,102,.22);
+color:#ffd4de;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
 .hidden{display:none}
 @media(max-width:760px){.detail-grid{grid-template-columns:1fr}}
 </style>
@@ -94,13 +269,13 @@ function renderHeader(shell){const row=el('div',{className:'card'},el('div',{cla
 function buildOrgSelect(){const select=el('select',{className:'select',style:{maxWidth:'240px'},onChange:async e=>{state.org=state.orgs.find(org=>org.id===e.target.value)||state.orgs[0];state.role=state.memberships.find(m=>m.org_id===state.org.id)?.role||'admin';saveState();await loadData();}});for(const org of state.orgs){const option=el('option',{value:org.id},org.name);if(org.id===state.org?.id)option.selected=true;select.appendChild(option);}return select;}
 function renderTabs(shell){const tabs=el('div',{className:'tabs'});for(const[key,label]of[['dashboard','Dashboard'],['alerts','Alerts'],['agents','Agents'],['policies','Policies'],['deployment','Deployment']])tabs.appendChild(el('button',{className:`tab ${state.tab===key||(state.tab==='detail'&&key==='alerts')?'active':''}`,onClick:()=>{state.tab=key;state.selected=null;render();}},label));shell.appendChild(tabs);}
 
-function renderDashboard(shell){const blocked=state.detections.filter(d=>d.action_taken==='blocked').length;const warned=state.detections.filter(d=>d.action_taken==='warned').length;const monitored=state.detections.filter(d=>d.action_taken==='monitored').length;const critical=state.detections.filter(d=>d.severity==='critical').length;const active=state.agents.filter(a=>a.status==='active').length;const metrics=el('div',{className:'metric-grid',style:{marginBottom:'16px'}});for(const[label,val,sub]of[['Detections',state.detections.length,'Last 7 days'],['Blocked',blocked,`${critical} critical`],['Warned',warned,'User notified'],['Monitored',monitored,'Silent'],['Agents',`${active} / ${state.agents.length}`,'Online']])metrics.appendChild(el('div',{className:'card'},el('div',{className:'metric-label'},label),el('div',{className:'metric-val'},String(val)),el('div',{className:'metric-sub'},sub)));shell.appendChild(metrics);const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},'Recent detections'));if(!state.detections.length){card.appendChild(el('div',{className:'sub'},'No detections yet. Enroll agents to start seeing live pilot data.'));shell.appendChild(card);return;}const list=el('div',{className:'list'});for(const det of state.detections.slice(0,10)){list.appendChild(el('div',{className:'list-item',onClick:()=>{state.selected=det;state.tab='detail';render();}},el('span',{className:`sev-${det.severity}`},det.severity),el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},det.title),el('div',{className:'mono',style:{color:'#94a3b8'}},det.domain||det.url||'')),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('div',{className:'mono'},ago(det.created_at))))}card.appendChild(list);shell.appendChild(card);}
+function renderDashboard(shell){const blocked=state.detections.filter(d=>d.action_taken==='blocked').length;const warned=state.detections.filter(d=>d.action_taken==='warned').length;const monitored=state.detections.filter(d=>d.action_taken==='monitored').length;const critical=state.detections.filter(d=>d.severity==='critical').length;const active=state.agents.filter(a=>a.status==='active').length;const metrics=el('div',{className:'metric-grid',style:{marginBottom:'16px'}});for(const[label,val,sub]of[['Detections',state.detections.length,'Last 7 days'],['Blocked',blocked,`${critical} critical`],['Warned',warned,'User notified'],['Monitored',monitored,'Silent'],['Agents',`${active} / ${state.agents.length}`,'Online']])metrics.appendChild(el('div',{className:'card'},el('div',{className:'metric-label'},label),el('div',{className:'metric-val'},String(val)),el('div',{className:'metric-sub'},sub)));shell.appendChild(metrics);const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},'Recent detections'));if(!state.detections.length){card.appendChild(el('div',{className:'sub'},'No detections yet. Enroll agents to start seeing live pilot data.'));shell.appendChild(card);return;}const list=el('div',{className:'list'});for(const det of state.detections.slice(0,10)){list.appendChild(el('div',{className:'list-item',onClick:()=>{state.selected=det;state.tab='detail';render();}},el('span',{className:`sev-${det.severity}`},det.severity),el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},det.title),el('div',{className:'mono',style:{color:'var(--text-mid)'}},det.domain||det.url||'')),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('div',{className:'mono'},ago(det.created_at))))}card.appendChild(list);shell.appendChild(card);}
 
-function renderAlerts(shell){const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},'All detections'));if(!state.detections.length){card.appendChild(el('div',{className:'sub'},'No detections yet.'));shell.appendChild(card);return;}for(const det of state.detections){card.appendChild(el('div',{className:'list-item',onClick:()=>{state.selected=det;state.tab='detail';render();}},el('span',{className:`sev-${det.severity}`},det.severity),el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},det.title),el('div',{className:'mono',style:{color:'#94a3b8'}},det.domain||'')),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('div',{className:'mono'},ago(det.created_at))))}shell.appendChild(card);}
+function renderAlerts(shell){const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},'All detections'));if(!state.detections.length){card.appendChild(el('div',{className:'sub'},'No detections yet.'));shell.appendChild(card);return;}for(const det of state.detections){card.appendChild(el('div',{className:'list-item',onClick:()=>{state.selected=det;state.tab='detail';render();}},el('span',{className:`sev-${det.severity}`},det.severity),el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},det.title),el('div',{className:'mono',style:{color:'var(--text-mid)'}},det.domain||'')),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('div',{className:'mono'},ago(det.created_at))))}shell.appendChild(card);}
 
-function renderDetail(shell){if(!state.selected)return;const det=state.selected;shell.appendChild(el('button',{className:'btn btn-secondary',style:{marginBottom:'12px'},onClick:()=>{state.tab='alerts';render();}},'Back'));const top=el('div',{className:'card'});top.appendChild(el('div',{className:'row',style:{marginBottom:'10px'}},el('span',{className:`sev-${det.severity}`},det.severity),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('span',{className:'pill'},`Score ${det.risk_score||0}`)));top.appendChild(el('div',{style:{fontSize:'22px',fontWeight:'700',marginBottom:'6px'}},det.title));top.appendChild(el('div',{className:'mono',style:{color:'#64748b'}},`${det.domain||''} - ${det.user_email||det.agent_id||''}`));shell.appendChild(top);const grid=el('div',{className:'detail-grid'});const meta=el('div',{className:'card'},el('div',{className:'section-title'},'Metadata'));for(const[k,v]of[['Time',fmt(det.created_at)],['URL',det.url],['Domain',det.domain],['Agent',det.agent_id],['Module',det.module],['Score',det.risk_score]])meta.appendChild(el('div',{className:'meta'},el('span',{className:'meta-key'},k),el('span',{className:'meta-val'},String(v||'-'))));const signals=el('div',{className:'card'},el('div',{className:'section-title'},'Signals'));const items=Array.isArray(det.signals)?det.signals:[];if(!items.length)signals.appendChild(el('div',{className:'sub'},'No signals recorded'));for(const signal of items)signals.appendChild(el('div',{className:'hint',style:{marginBottom:'8px'}},typeof signal==='string'?signal:(signal.label||JSON.stringify(signal))));grid.appendChild(meta);grid.appendChild(signals);shell.appendChild(grid);}
+function renderDetail(shell){if(!state.selected)return;const det=state.selected;shell.appendChild(el('button',{className:'btn btn-secondary',style:{marginBottom:'12px'},onClick:()=>{state.tab='alerts';render();}},'Back'));const top=el('div',{className:'card'});top.appendChild(el('div',{className:'row',style:{marginBottom:'10px'}},el('span',{className:`sev-${det.severity}`},det.severity),el('span',{className:`act-${det.action_taken}`},det.action_taken),el('span',{className:'pill'},`Score ${det.risk_score||0}`)));top.appendChild(el('div',{style:{fontSize:'22px',fontWeight:'700',marginBottom:'6px'}},det.title));top.appendChild(el('div',{className:'mono',style:{color:'var(--text-mid)'}},`${det.domain||''} - ${det.user_email||det.agent_id||''}`));shell.appendChild(top);const grid=el('div',{className:'detail-grid'});const meta=el('div',{className:'card'},el('div',{className:'section-title'},'Metadata'));for(const[k,v]of[['Time',fmt(det.created_at)],['URL',det.url],['Domain',det.domain],['Agent',det.agent_id],['Module',det.module],['Score',det.risk_score]])meta.appendChild(el('div',{className:'meta'},el('span',{className:'meta-key'},k),el('span',{className:'meta-val'},String(v||'-'))));const signals=el('div',{className:'card'},el('div',{className:'section-title'},'Signals'));const items=Array.isArray(det.signals)?det.signals:[];if(!items.length)signals.appendChild(el('div',{className:'sub'},'No signals recorded'));for(const signal of items)signals.appendChild(el('div',{className:'hint',style:{marginBottom:'8px'}},typeof signal==='string'?signal:(signal.label||JSON.stringify(signal))));grid.appendChild(meta);grid.appendChild(signals);shell.appendChild(grid);}
 
-function renderAgents(shell){const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},`Agents (${state.agents.length})`));if(!state.agents.length){card.appendChild(el('div',{className:'sub'},'No agents enrolled yet.'));shell.appendChild(card);return;}for(const agent of state.agents){card.appendChild(el('div',{className:'list-item'},el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},(agent.user_email||agent.id).split('@')[0]),el('div',{className:'mono',style:{color:'#94a3b8'}},`${agent.browser||'-'} | ${agent.agent_version||'-'} | ${agent.device_name||'-'}`)),el('span',{className:`act-${agent.status}`},agent.status),el('div',{className:'mono'},ago(agent.last_seen_at))))}shell.appendChild(card);}
+function renderAgents(shell){const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},`Agents (${state.agents.length})`));if(!state.agents.length){card.appendChild(el('div',{className:'sub'},'No agents enrolled yet.'));shell.appendChild(card);return;}for(const agent of state.agents){card.appendChild(el('div',{className:'list-item'},el('div',{className:'grow'},el('div',{style:{fontWeight:'600',fontSize:'13px'}},(agent.user_email||agent.id).split('@')[0]),el('div',{className:'mono',style:{color:'var(--text-mid)'}},`${agent.browser||'-'} | ${agent.agent_version||'-'} | ${agent.device_name||'-'}`)),el('span',{className:`act-${agent.status}`},agent.status),el('div',{className:'mono'},ago(agent.last_seen_at))))}shell.appendChild(card);}
 
 function renderPolicies(shell){const p=state.policies;const card=el('div',{className:'card'});card.appendChild(el('div',{className:'section-title'},'Policies'));if(!p){card.appendChild(el('div',{className:'sub'},'Loading policies...'));shell.appendChild(card);return;}const modeRow=el('div',{className:'row',style:{marginBottom:'14px'}});for(const mode of['block','warn','monitor'])modeRow.appendChild(el('button',{className:'btn '+(p.enforcement_mode===mode?'btn-primary':'btn-secondary'),onClick:()=>updatePolicies({...p,enforcement_mode:mode})},mode));card.appendChild(modeRow);for(const[key,label]of[['protected_brands','Protected brands'],['blocklist','Blocklist'],['allowlist','Allowlist']]){card.appendChild(el('div',{className:'label'},label));const hint=el('div',{className:'hint'});const items=Array.isArray(p[key])?p[key]:[];hint.textContent=items.length?items.join(', '):'No entries yet';card.appendChild(hint);}shell.appendChild(card);}
 
